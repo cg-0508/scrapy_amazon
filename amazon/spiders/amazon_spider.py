@@ -1,6 +1,8 @@
 import scrapy
 from scrapy.selector import Selector
 from amazon.items import AmazonItem
+import re
+from scrapy import Request
 
 class AmazonSpider(scrapy.Spider):
     name = "amazon"
@@ -15,7 +17,12 @@ class AmazonSpider(scrapy.Spider):
         for li in lists:
             Amazon = AmazonItem()
             Amazon['ymx_goods_name'] = Selector(text=li).xpath('//div/div[3]/div[1]/a/h2/text()').extract()
-            Amazon['ymx_goods_price'] = Selector(text=li).xpath('//div/div[5]/div/a/span[2]/text()').extract()
+
+            ymx_goods_price = Selector(text=li).xpath('//div/div[5]/div/a/span[2]/text()').extract()
+            ymx_goods_price = re.findall(u'[1-9]\d*\.[1-9]\d*', ymx_goods_price[0])
+            Amazon['ymx_goods_price'] = ymx_goods_price
+
             Amazon['ymx_goods_brand'] = Selector(text=li).xpath('//div/div[3]/div[2]/span[2]/text()').extract()
-            items.append(Amazon)
-        return items
+
+
+            yield Amazon

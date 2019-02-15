@@ -22,6 +22,7 @@ class AmazonItem(scrapy.Item):
     ymx_goods_url = scrapy.Field()
     ymx_goods_keyword = scrapy.Field()
     ymx_goods_brand = scrapy.Field()
+    ymx_goods_freight = scrapy.Field()
     # ymx_goods_shop_url = scrapy.Field()
     # ymx_goods_shop_name = scrapy.Field()
     
